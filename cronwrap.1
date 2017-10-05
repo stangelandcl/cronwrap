@@ -1,0 +1,73 @@
+.TH CRONWRAP 1 Local
+.SH NAME
+cronwrap \- control scheduled job execution and mail results
+.SH SYNOPSIS
+cronwrap [-s <subject>] [-r <recipient> [,<recipient>  ...] ] [-t <timeout secs>] [-x n [-x n] ...] [-koeV] <cmd> [<cmd args> ...]
+
+cronwrap [-s <subject>] [-r <recipient> [,<recipient> ...] ] -L <log file> [-L <log file> -L ...]
+.SH DESCRIPTION
+\fICronwrap\fR is a utility that offers more control over the execution
+of a cron job than the standard cron daemon allows. It can ensure and report that
+the job completes within a specified time period. It can email and/or log any output
+produced from the job. It reports on the exit status of the job.
+
+.SH OPTIONS
+.TP
+\-s <subject>
+Subject of any email that is sent after running this job.
+.TP
+\-r <recipient> [,<recipient> ...]
+Comma seperated list of email addresses who will be sent any mail resulting from
+the job.
+.TP
+\-t <timeout secs>
+The number of seconds this job is expected to complete within. \fIcronwrap\fR
+will report via email if the job execution exceeds this time. The default is
+900 seconds (15 minutes).
+.TP
+\-l <log file>
+Specifies a path to a log file. Messages relating to the command are written here.
+.TP
+\-L <log file>
+Specifies a path to a log file. The content of the file is mailed to the specified
+recipient (or root) and the file is zeroed.
+.TP
+\-k
+Terminate the job if it runs longer than the value specified with -t. A SIGTERM
+will be sent to the job followed by a SIGKILL after 5 seconds.
+.TP
+\-o
+Ignore any output on standard out from the job. Normally any output is captured
+and reported via email.
+.TP
+\-e
+Ignore any output on standard error from the job. Normally any output is
+captured and reported via email.
+.TP
+\-x n
+Do not report on the exit status if it is this value n. This option can be specified multiple times. An exit status of 0 is always ignored.
+.TP
+\-V
+Print version number and exit.
+.TP
+\<cmd> [<cmd args> ...]
+The job that will be executed and monitored by \fIcronwrap\fR.
+
+.SH CAVEATS
+If the -k option is used and the job is using buffered I/O, as is common for
+the standard out stream constructed by stdio(3), then up to a block size worth
+of output may be lost when the job is terminated. This can only averted by
+using unbuffered I/O or by ensuring the buffer is flushed when exiting. This
+can be achieved by installing a signal handler for SIGTERM and in it calling
+exit(2). The standard error stream constructed by stdio(3) is unbuffered and
+does not suffer this problem.
+
+The outputs of the command are handled internally to cronwrap as strings.
+If the command outputs null characters output will be lost by cronwrap.
+
+.SH AUTHOR
+Scott Hamilton
+.br
+University of Wollongong
+.br
+sah@uow.edu.au

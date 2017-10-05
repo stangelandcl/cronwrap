@@ -1,0 +1,13 @@
+Cronwrap is a utility that offers more control over the execution of a cron job
+than the standard cron daemon allows.  It can ensure and report that the job
+completes  within  a specified  time  period.  It can email and/or log any
+output produced from the job. It reports on the exit status of  the job.
+
+This was developed at the University of Wollongong to manage the email output
+from scheduled jobs with cron. It has been running successfully in a Solaris
+environment since February 2001. It has not been compiled or tested on any
+platform other than Solaris however this shouldn't be difficult to do. It is
+lint free and should be kept that way. There is plenty of room for development
+and new features, I am happy to receive patches.
+
+Scott Hamilton <sah@uow.edu.au>

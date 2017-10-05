@@ -1,0 +1,2 @@
+This is a simple program with a simple make file. Just type "make" and put the
+cronwrap binary into the file system where you can run it.
